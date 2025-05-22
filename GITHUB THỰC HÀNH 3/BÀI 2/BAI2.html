@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đăng Ký Thành Viên</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        background: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      label {
+        display: block;
+        text-align: left;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        transition: 0.3s ease;
+      }
+
+      input:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      .error {
+        color: red;
+        font-size: 0.85em;
+        margin-top: 3px;
+        text-align: left;
+      }
+
+      .success {
+        display: none;
+        color: #28a745;
+        font-size: 1.1em;
+        margin-top: 20px;
+        font-weight: bold;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px 25px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: 0.3s ease;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+
+      #successBox {
+        display: none;
+        padding: 20px;
+        background-color: #d4edda;
+        color: #155724;
+        border-radius: 10px;
+        margin-top: 30px;
+        font-size: 1em;
+        animation: fadeIn 0.7s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Form Đăng Ký</h2>
+      <form id="registerForm">
+        <label>Họ tên</label>
+        <input type="text" id="fullname" name="fullname" />
+        <div id="fullnameError" class="error"></div>
+
+        <label>Email</label>
+        <input type="email" id="email" name="email" />
+        <div id="emailError" class="error"></div>
+
+        <label>Mật khẩu</label>
+        <input type="password" id="password" name="password" />
+        <div id="passwordError" class="error"></div>
+
+        <button type="submit">Đăng ký</button>
+      </form>
+
+      <div id="successBox">🎉 Đăng ký thành công! Cảm ơn bạn đã tham gia.</div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#registerForm").on("submit", function (e) {
+          e.preventDefault();
+
+          // Reset lỗi
+          $(".error").text("");
+          let isValid = true;
+
+          let fullname = $("#fullname").val().trim();
+          let email = $("#email").val().trim();
+          let password = $("#password").val().trim();
+
+          if (fullname === "") {
+            $("#fullnameError").text("Họ tên không được để trống.");
+            isValid = false;
+          }
+
+          let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            $("#emailError").text("Email không hợp lệ.");
+            isValid = false;
+          }
+
+          if (password.length < 6) {
+            $("#passwordError").text("Mật khẩu tối thiểu 6 ký tự.");
+            isValid = false;
+          }
+
+          if (isValid) {
+            $.ajax({
+              url: "https://jsonplaceholder.typicode.com/posts",
+              type: "POST",
+              data: {
+                fullname: fullname,
+                email: email,
+                password: password,
+              },
+              success: function () {
+                $("#registerForm").slideUp(400, function () {
+                  $("#successBox").fadeIn(500);
+                });
+              },
+              error: function () {
+                alert("Server bận, vui lòng thử lại sau.");
+              },
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

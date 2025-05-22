@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Công Việc (Todo List)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="todo-container">
+        <h1>Quản Lý Công Việc</h1>
+        <div class="input-group">
+            <input type="text" id="task-input" placeholder="Nhập công việc mới...">
+            <button id="add-task-btn">Thêm công việc</button>
+        </div>
+        <div class="filter-group">
+            <button class="filter-btn" data-filter="all">Tất cả</button>
+            <button class="filter-btn" data-filter="active">Chưa hoàn thành</button>
+            <button class="filter-btn" data-filter="completed">Đã hoàn thành</button>
+        </div>
+        <ul id="task-list"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
